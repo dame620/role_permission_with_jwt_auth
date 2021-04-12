@@ -7,17 +7,15 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import VueRouter from 'vue-router';
+import Home from './components/Home.vue';
+import Login from './components/Login.vue';
+import Permissions from './components/Permissions.vue';
+import NotAuthorized from './components/NotAuthorized.vue';
+import Roles from './components/Roles.vue';
+import Users from './components/Users.vue'
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+Vue.use(VueRouter)
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
@@ -26,7 +24,64 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+ const routes=[
+    {
+        path:'/home',
+        component: Home
+    },
+    
+    {
+        path: '/login',
+        name: 'login',
+        props: true,
+        component: Login,
+        meta: {
+            authRequired: 'false',
+        },
+    },
+    {
+        path: '/permissions',
+        name: 'permissions',
+        props: true,
+        component: Permissions,
+        meta: {
+          authRequired: 'true',
+        },
+    },
+      {
+        path: '/not-authorized',
+        name: 'not-authorized',
+        props: true,
+        component: NotAuthorized,
+        meta: {
+          authRequired: 'false',
+        },
+      },
+
+      {
+        path: '/users',
+        name: 'users',
+        props: true,
+        component: Users,
+        meta: {
+          authRequired: 'false',
+        },
+      },
+      {
+        path: '/roles',
+        name: 'roles',
+        props: true,
+        component: Roles,
+        meta: {
+          authRequired: 'false',
+        },   
+      }
+
+    
+]
+const router=new VueRouter({routes})
 
 const app = new Vue({
     el: '#app',
+    router: router
 });
